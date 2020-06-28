@@ -1,2 +1,2 @@
 release: python manage.py migrate
-web: gunicorn BJJ.wsgi --log-file -
+web: gunicorn Manada.wsgi --log-file -
