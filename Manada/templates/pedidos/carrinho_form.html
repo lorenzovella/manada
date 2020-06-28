@@ -1,0 +1,61 @@
+
+{% extends "base.html" %}
+{% load static %}
+{% block head %}
+<script type="text/javascript">
+function mascara(o,f){
+    v_obj=o
+    v_fun=f
+    setTimeout("execmascara()",1)
+}
+function execmascara(){
+    v_obj.value=v_fun(v_obj.value)
+}
+function mtel(v){
+    v=v.replace(/\D/g,"");
+    v=v.replace(/^(\d{2})(\d)/g,"($1) $2");
+    v=v.replace(/(\d)(\d{4})$/,"$1-$2");
+    return v;
+}
+function id( el ){
+	return document.getElementById( el );
+}
+window.onload = function(){
+	id('telefone').oninput = function(){
+		mascara( this, mtel );
+	}
+}
+</script>
+{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <h2 class="m-3 text-center mx-auto">
+      Por favor identifique-se antes de começar o pedido!
+      </h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-6 mx-auto">
+      <form method="post">
+        {% csrf_token %}
+        {{form.errors}}
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label" for="telefone">Telefone: </label>
+          <input class="form-control col-sm-10" id="telefone" maxlength="15" type="tel" name="telefone" value="{{ object.telefone }}">
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label" for="nome">Nome: </label>
+          <input class="form-control col-sm-10" id="nome" type="text" name="nome" value="{{ object.nome }}">
+        </div>
+        <div class="form-group row">
+          <input type="hidden" id="status" type="text" name="status" value="0">
+        </div>
+        <input type="submit" value="Save" class="btn btn-primary">
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

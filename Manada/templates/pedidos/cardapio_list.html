@@ -1,0 +1,74 @@
+
+{% extends "base.html" %}
+{% block content %}
+
+<!-- <div><a class="btn btn-primary" href="{% url 'pedidos_cardapio_create' %}">Create a new cardapio</a></div> -->
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="row mt-3">
+				<div class="col-md-8">
+          <h3>
+            <a class="text-decoration-none text-dark" href="{% url 'pedidos_cardapio_list' %}"> Cardápio Manada Burguer</a>
+          </h3>
+        </div>
+	      {% if contador_carrinho %}
+				<div class="col-md-4">
+					<h3>
+						Items no carrinho: {{contador_carrinho}}</br> Subtotal: R${{subtotal_carrinho}}
+					</h3>
+				</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-8 mx-auto">
+			<nav class="navbar-sm sticky-top navbar-expand navbar-dark bg-dark rounded m-3">
+			  <div id="navbar">
+			    <ul class="nav navbar-text d-flex">
+						<li class="nav-item">
+							<a class="nav-link" onclick="document.querySelectorAll('h1')[0].scrollIntoView({behavior: 'smooth'});">
+								Porções
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" onclick="document.querySelectorAll('h1')[1].scrollIntoView({behavior: 'smooth'});">
+								Lanches
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" onclick="document.querySelectorAll('h1')[2].scrollIntoView({behavior: 'smooth'});">
+								Bebidas
+							</a>
+						</li>
+			    </ul>
+			  </div>
+			</nav>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-8 mx-auto">
+      {% for object in object_list|dictsortreversed:"tipoDoItem" %}
+		    {% ifchanged %}
+					<h1>{{object.tipoDoItem}}</h1>
+				{% endifchanged %}
+				<div class="card m-2">
+					<h5 class="card-header">
+						{{object.nome}}
+					</h5>
+					<div class="card-body">
+						<p class="card-text">
+							{{object.descricao}}
+						</p>
+					</div>
+					<div class="card-footer">
+						R${{object.preco}} <span class="float-right"><a href="{% url 'adicionar_ao_carrinho' pk=object %}">+ Adicionar ao Carrinho</a></span>
+					</div>
+				</div>
+      {% endfor %}
+		</div>
+	</div>
+</div>
+{% endblock %}

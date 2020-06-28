@@ -1,0 +1,42 @@
+
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    
+<p>
+    <a class="btn btn-light" href="{% url 'pedidos_cardapio_list' %}">
+    cardapio Listing
+    </a>
+</p>
+    
+<form method="post">
+  {% csrf_token %}
+  {{form.errors}}
+  <div class="form-group row">
+  <label class="col-sm-2 col-form-label" for="last_updated">last_updated: </label>
+  <input class="form-control col-sm-10" id="last_updated" type="datetime-local" name="last_updated" value="{{ object.last_updated }}" disabled>
+  </div>
+  <div class="form-group row">
+  <label class="col-sm-2 col-form-label" for="preco">preco: </label>
+  <input class="form-control col-sm-10" id="preco" type="number" name="preco" value="{{ object.preco }}">
+  </div>
+  <div class="form-group row">
+  <label class="col-sm-2 col-form-label" for="nome">nome: </label>
+  <input class="form-control col-sm-10" id="nome" type="text" name="nome" value="{{ object.nome }}">
+  </div>
+  <div class="form-group row">
+  <label class="col-sm-2 col-form-label" for="created">created: </label>
+  <input class="form-control col-sm-10" id="created" type="datetime-local" name="created" value="{{ object.created }}" disabled>
+  </div>
+  <div class="form-group row">
+  <label class="col-sm-2 col-form-label" for="tipoDoItem">tipoDoItem: </label>
+  <input class="form-control col-sm-10" id="tipoDoItem" type="text" name="tipoDoItem" value="{{ object.tipoDoItem }}">
+  </div>
+  <div class="form-group row">
+  <label class="col-sm-2 col-form-label" for="descricao">descricao: </label>
+  <input class="form-control col-sm-10" id="descricao" type="text" name="descricao" value="{{ object.descricao }}">
+  </div>
+  <input type="submit" value="Save" class="btn btn-primary">
+</form>
+
+{% endblock %}
