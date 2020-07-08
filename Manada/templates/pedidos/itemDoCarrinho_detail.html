@@ -2,16 +2,19 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-    
+
 <p>
     <a class="btn btn-light" href="{% url 'pedidos_itemDoCarrinho_list' %}">
     itemDoCarrinho Listing
     </a>
 </p>
-    
+
 <table class="table">
     <tr><td>last_updated</td><td>{{ object.last_updated }}</td></tr>
     <tr><td>created</td><td>{{ object.created }}</td></tr>
+    {% for ref in object.referenciaOpcionais.all %}<tr><td>referencia Opcionais</td><td>{{ref}}</td></tr>{% endfor %}
+    <tr><td>ref cardapio</td><td>{{ object.referenciaCardapio }}</td></tr>
+    <tr><td>ref numero carrinho ( igual session carrinho)</td><td>{{ object.referenciaCarrinho }}</td></tr>
 </table>
 <a class="btn btn-primary" href="{{object.get_update_url}}">Edit</a>
 

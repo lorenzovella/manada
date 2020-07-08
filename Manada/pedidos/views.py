@@ -117,9 +117,36 @@ class cardapioUpdateView(generic.UpdateView):
     pk_url_kwarg = "pk"
 
 
-class itemDoCarrinhoListView(generic.ListView):
-    model = models.itemDoCarrinho
-    form_class = forms.itemDoCarrinhoForm
+def itemDoCarrinhoListView(request):
+        context = {}
+        itensDoCarrinho = {}
+        context['items'] = []
+        if request.session.has_key('carrinho'):
+            itensDoCarrinho = models.itemDoCarrinho.objects.filter(referenciaCarrinho=request.session['carrinho'])
+            context['contador_carrinho'] = itensDoCarrinho.count()
+            opt = 0
+            lanches = 0
+            for item in itensDoCarrinho:
+                tempArr = [item, item.referenciaCardapio,item.referenciaCardapio.nome,item.referenciaCardapio.preco]
+                tempArr2 = []
+                for opt in item.referenciaOpcionais.all():
+                    tempArr2.append([opt.nome, opt.preco])
+                tempArr.append(tempArr2)
+                context['items'].append(tempArr)
+            if  itensDoCarrinho.count() > 0:
+                lanchesQuerySet = models.cardapio.objects.filter(item__in = itensDoCarrinho)
+                lanches = lanchesQuerySet.aggregate(Sum('preco'))['preco__sum']
+                if models.opcionais.objects.filter(itemdocarrinho__in = itensDoCarrinho).count() > 0:
+                    optQuerySet = models.opcionais.objects.filter(itemdocarrinho__in = itensDoCarrinho)
+                    opt = optQuerySet.aggregate(Sum("preco"))['preco__sum']
+            context['subtotal_carrinho'] =  lanches + opt
+            return render(request, 'pedidos/itemDoCarrinho_list.html', context)
+
+def itemDoCarrinhoDelete(request, pk):
+    instance = models.itemDoCarrinho.objects.get(pk=pk)
+    if(instance.referenciaCarrinho.pk == request.session['carrinho']):
+        instance.delete()
+    return redirect('pedidos_itemDoCarrinho_list')
 
 
 class itemDoCarrinhoCreateView(generic.CreateView):

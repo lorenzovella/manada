@@ -25,9 +25,11 @@ urlpatterns = (
     path("pedidos/cardapio/create/", views.cardapioCreateView.as_view(), name="pedidos_cardapio_create"),
     path("pedidos/cardapio/detail/<int:pk>/", views.cardapioDetailView.as_view(), name="pedidos_cardapio_detail"),
     path("pedidos/cardapio/update/<int:pk>/", views.cardapioUpdateView.as_view(), name="pedidos_cardapio_update"),
-    path("pedidos/itemDoCarrinho/", views.itemDoCarrinhoListView.as_view(), name="pedidos_itemDoCarrinho_list"),
+    path("pedidos/itemDoCarrinho/", views.itemDoCarrinhoListView, name="pedidos_itemDoCarrinho_list"),
     path("pedidos/itemDoCarrinho/create/", views.itemDoCarrinhoCreateView.as_view(), name="pedidos_itemDoCarrinho_create"),
     path("pedidos/itemDoCarrinho/detail/<int:pk>/", views.itemDoCarrinhoDetailView.as_view(), name="pedidos_itemDoCarrinho_detail"),
     path("pedidos/itemDoCarrinho/update/<int:pk>/", views.itemDoCarrinhoUpdateView.as_view(), name="pedidos_itemDoCarrinho_update"),
     path("pedidos/adicionarAoCarrinho/<int:pk>/", views.adicionarAoCarrinho, name="adicionar_ao_carrinho"),
+    path("pedidos/itemDoCarrinho/delete/<int:pk>/", views.itemDoCarrinhoDelete, name="pedidos_itemDoCarrinho_delete"),
+
 )

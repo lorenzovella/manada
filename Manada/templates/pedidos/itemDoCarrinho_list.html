@@ -1,8 +1,56 @@
 
 {% extends "base.html" %}
 {% block content %}
-{% for object in object_list %}
-  <div class="m-2"><a href="{{object.get_absolute_url}}">{{object}}</a></div>
-{% endfor %}
-<div><a class="btn btn-primary" href="{% url 'pedidos_itemDoCarrinho_create' %}">Create a new itemDoCarrinho</a></div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="row mt-3">
+        <div class="col-md-8">
+          <h3>
+            <div class="text-decoration-none text-dark">Manada Burguer</div>
+          </h3>
+          <a class="btn btn-primary" href="{% url 'pedidos_cardapio_list' %}">Voltar ao Cardápio</a>
+        </div>
+        {% if contador_carrinho %}
+        <div class="col-md-4">
+          <h3>
+            Items no carrinho: {{contador_carrinho}}</br> Subtotal: R${{subtotal_carrinho}}
+          </h3>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+	<div class="row">
+		<div class="col-md-8 mx-auto">
+    {% for item in items %}
+      <div class="card m-2">
+        <div class="card-header">
+          <div class="d-flex float-right">
+            <div><a href="{% url 'pedidos_itemDoCarrinho_delete' item.0 %}" class="btn btn-danger">X</a></div>
+          </div>
+          <div class="d-flex flex-column float-left">
+            <div class="d-flex align-items-start flex-column">
+              <h5>{{item.2}}</h5>
+              <p class="lead">R${{item.3}}</p>
+            </div>
+            {% if item.4 %}
+            {% for opt in item.4 %}
+              <p>{{opt.0}} - R${{opt.1}}</p>
+            {% endfor%}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+		</div>
+	</div>
+  <div class="row">
+    <div class="col-sm d-flex">
+      <a href="#" class="btn btn-outline-success mx-auto">Finalizar seu pedido</a>
+    </div>
+  </div>
+</div>
+
 {% endblock %}

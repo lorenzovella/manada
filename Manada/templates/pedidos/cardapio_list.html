@@ -9,10 +9,13 @@
 			<div class="row mt-3">
 				<div class="col-md-8">
           <h3>
-            <a class="text-decoration-none text-dark" href="{% url 'pedidos_cardapio_list' %}"> Cardápio Manada Burguer</a>
+            <div class="text-decoration-none text-dark"> Cardápio Manada Burguer</div>
           </h3>
+				{% if contador_carrinho %}
+					<a class="btn btn-primary mt-2" href="{% url 'pedidos_itemDoCarrinho_list' %}">Ver meu carrinho</a>
+				{% endif %}
         </div>
-	      {% if contador_carrinho %}
+				{% if contador_carrinho %}
 				<div class="col-md-4">
 					<h3>
 						Items no carrinho: {{contador_carrinho}}</br> Subtotal: R${{subtotal_carrinho}}
