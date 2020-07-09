@@ -1,5 +1,26 @@
-
 {% extends "base.html" %}
+
+{% block head %}
+<script>
+  function PrintElem(elem)
+  {
+      var mywindow = window.open('', 'PRINT', 'height=400,width=600');
+
+      mywindow.document.write('<html><head><title></title>');
+      mywindow.document.write(document.head.innerHTML);
+      mywindow.document.write('</head><body>');
+      mywindow.document.write(document.getElementById(elem).innerHTML);
+      mywindow.document.write('</body></html>');
+
+      mywindow.document.close(); // necessary for IE >= 10
+      mywindow.focus(); // necessary for IE >= 10*/
+
+      mywindow.print();
+      return true;
+  }
+</script>
+{% endblock %}
+
 {% block content %}
 
 <div class="container">
@@ -20,13 +41,13 @@
       {% ifchanged %}
       <h3>{{obj.get_status_display}}</h3>
       {% endifchanged %}
-      <div class="card m-2" id="card-{{obj}}">
+      <div class="card m-2">
         <div class="card-header">
-          <div class="d-flex float-right">
-            <div><a href="card-{{obj}}" class="btn btn-info mr-2">Imprimir</a></div>
-            <div><a href="{% url 'pedidos_carrinho_status' obj %}" class="btn btn-warning">Avançar pedido</a></div>
+          <div class="d-flex justify-content-end">
+            <button onclick="PrintElem('card-{{obj}}')" class="btn btn-info mr-2">Imprimir</button>
+            <a href="{% url 'pedidos_carrinho_status' obj %}" class="btn btn-warning">Avançar pedido</a>
           </div>
-          <div class="d-flex flex-column float-left col-8">
+          <div class="d-flex flex-column justify-content-start" id="card-{{obj}}">
             <div class="d-flex align-items-start flex-column">
               <h5> <span class="badge badge-dark m-2"><h4>nº{{obj}}</h4></span> Pedido feito às: {{obj.created|date:"j/n H:i"}}</h5>
               <p class="lead">{{obj.nome}} - {{obj.telefone}}</p>
