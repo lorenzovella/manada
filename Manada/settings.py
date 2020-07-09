@@ -21,7 +21,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = os.environ.get('DEBUG') == True
 DEBUG_PROPAGATE_EXCEPTIONS = True
 
-ALLOWED_HOSTS = ['manadalanches.herokuapp.com','127.0.0.1','manadafoodhouse.com.br']
+ALLOWED_HOSTS = ['manadalanches.herokuapp.com','127.0.0.1','manadafoodhouse.com.br','www.manadafoodhouse.com.br']
 
 # Application definition
 INSTALLED_APPS = [
