@@ -1,9 +1,10 @@
 from django.db import models
 from django.urls import reverse
+from django.db.models import Sum, Count
 
 
 class carrinho(models.Model):
-    statusDoCarrinho = [("0","Pedido em aberto"),("1","Pedido concluido")]
+    statusDoCarrinho = [("0","Pedido não-concluido pelo cliente"),("1","Pedido enviado ao restaurante"),("2","Pedido em preparo"),("3","Pedido concluido")]
     # Fields
     telefone = models.CharField(max_length=30)
     created = models.DateTimeField(auto_now_add=True, editable=False)
@@ -22,7 +23,6 @@ class carrinho(models.Model):
 
     def get_update_url(self):
         return reverse("pedidos_carrinho_update", args=(self.pk,))
-
 
 class opcionais(models.Model):
     tiposDoCardapio = (("Lanches","Lanches"), ("Bebidas","Bebidas"),("Porções","Porções"))
@@ -73,7 +73,7 @@ class cardapio(models.Model):
 class itemDoCarrinho(models.Model):
 
     # Relationships
-    referenciaOpcionais = models.ManyToManyField(opcionais)
+    referenciaOpcionais = models.ManyToManyField(opcionais, related_name='itemdocarrinho')
     referenciaCardapio = models.ForeignKey("pedidos.cardapio", on_delete=models.CASCADE, related_name = 'item')
     referenciaCarrinho = models.ForeignKey("pedidos.carrinho", on_delete=models.CASCADE, related_name='item')
 
@@ -86,6 +86,9 @@ class itemDoCarrinho(models.Model):
 
     def __str__(self):
         return str(self.pk)
+
+    def get_valor_item(self):
+        return self.referenciaCardapio.aggregate(Sum("preco"))['preco__sum'] + self.referenciaOpcionais.aggregate(Sum("preco"))['preco__sum']
 
     def get_absolute_url(self):
         return reverse("pedidos_itemDoCarrinho_detail", args=(self.pk,))

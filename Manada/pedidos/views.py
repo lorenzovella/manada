@@ -41,6 +41,10 @@ def adicionarAoCarrinho(request, pk):
 class carrinhoListView(generic.ListView):
     model = models.carrinho
     form_class = forms.carrinhoForm
+    # ordering = ['-status']
+    def get_queryset(self):
+        return self.model.objects.exclude(status="0")
+
 
 
 class carrinhoCreateView(generic.CreateView):
@@ -61,6 +65,20 @@ class carrinhoUpdateView(generic.UpdateView):
     model = models.carrinho
     form_class = forms.carrinhoForm
     pk_url_kwarg = "pk"
+
+def carrinhoStatusChange(request, pk):
+    instance = models.carrinho.objects.get(pk=pk)
+    newStatus = min([int(instance.status) + 1,3])
+    instance.status = newStatus
+    instance.save()
+    if(newStatus == 1):
+        request.session.clear()
+        return redirect('pedidos_carrinho_sucesso', pk)
+    return redirect('pedidos_carrinho_list')
+
+def carrinhoSucesso(request, pk):
+    return render(request,'pedidos/carrinho_sucesso.html',{'idPedido':pk})
+
 
 
 class opcionaisListView(generic.ListView):

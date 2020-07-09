@@ -48,7 +48,7 @@
 	</div>
   <div class="row">
     <div class="col-sm d-flex mb-4">
-      <a href="#" class="btn btn-outline-success mx-auto">Finalizar seu pedido</a>
+      <a href="{% url 'pedidos_carrinho_status' request.session.carrinho %}" class="btn btn-outline-success mx-auto">Finalizar seu pedido</a>
     </div>
   </div>
 </div>

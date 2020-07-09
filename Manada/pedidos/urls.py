@@ -1,5 +1,6 @@
 from django.urls import path, include
 from rest_framework import routers
+from django.contrib.admin.views.decorators import staff_member_required
 
 from . import api
 from . import views
@@ -13,10 +14,12 @@ router.register("itemDoCarrinho", api.itemDoCarrinhoViewSet)
 
 urlpatterns = (
     path("api/v1/", include(router.urls)),
-    path("pedidos/carrinho/", views.carrinhoListView.as_view(), name="pedidos_carrinho_list"),
+    path("pedidos/carrinho/", staff_member_required(views.carrinhoListView.as_view()), name="pedidos_carrinho_list"),
     path("pedidos/carrinho/create/", views.carrinhoCreateView.as_view(), name="pedidos_carrinho_create"),
+    path("pedidos/carrinho/status/<int:pk>/", views.carrinhoStatusChange, name="pedidos_carrinho_status"),
     path("pedidos/carrinho/detail/<int:pk>/", views.carrinhoDetailView.as_view(), name="pedidos_carrinho_detail"),
     path("pedidos/carrinho/update/<int:pk>/", views.carrinhoUpdateView.as_view(), name="pedidos_carrinho_update"),
+    path("pedidos/carrinho/sucesso/<int:pk>/", views.carrinhoSucesso, name="pedidos_carrinho_sucesso"),
     path("pedidos/opcionais/", views.opcionaisListView.as_view(), name="pedidos_opcionais_list"),
     path("pedidos/opcionais/create/", views.opcionaisCreateView.as_view(), name="pedidos_opcionais_create"),
     path("pedidos/opcionais/detail/<int:pk>/", views.opcionaisDetailView.as_view(), name="pedidos_opcionais_detail"),
