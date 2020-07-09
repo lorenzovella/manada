@@ -14,12 +14,13 @@ class carrinhoAdminForm(forms.ModelForm):
 class carrinhoAdmin(admin.ModelAdmin):
     form = carrinhoAdminForm
     list_display = [
+        "nome", 
+        "telefone",
+        "status",
         "created",
-        "last_updated",
     ]
     readonly_fields = [
         "created",
-        "last_updated",
     ]
 
 
@@ -33,12 +34,9 @@ class opcionaisAdminForm(forms.ModelForm):
 class opcionaisAdmin(admin.ModelAdmin):
     form = opcionaisAdminForm
     list_display = [
-        "last_updated",
-        "created",
-    ]
-    readonly_fields = [
-        "last_updated",
-        "created",
+        "nome",
+        "preco",
+        "tipoDoItem",
     ]
 
 
@@ -52,16 +50,11 @@ class cardapioAdminForm(forms.ModelForm):
 class cardapioAdmin(admin.ModelAdmin):
     form = cardapioAdminForm
     list_display = [
-        "last_updated",
-        "preco",
         "nome",
-        "created",
+        "preco",
         "tipoDoItem",
         "descricao",
-    ]
-    readonly_fields = [
-        "last_updated",
-        "created",
+        "imagem"
     ]
 
 
@@ -75,11 +68,11 @@ class itemDoCarrinhoAdminForm(forms.ModelForm):
 class itemDoCarrinhoAdmin(admin.ModelAdmin):
     form = itemDoCarrinhoAdminForm
     list_display = [
-        "last_updated",
+        "referenciaCardapio",
+        "referenciaCarrinho",
         "created",
     ]
     readonly_fields = [
-        "last_updated",
         "created",
     ]
 
