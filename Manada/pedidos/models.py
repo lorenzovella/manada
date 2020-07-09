@@ -17,6 +17,11 @@ class carrinho(models.Model):
 
     def __str__(self):
         return str(self.pk)
+    def get_valor_carrinho(self):
+        sum = 0
+        for i in self.item.all():
+            sum += i.get_valor_item()
+        return sum
 
     def get_absolute_url(self):
         return reverse("pedidos_carrinho_detail", args=(self.pk,))
@@ -88,7 +93,7 @@ class itemDoCarrinho(models.Model):
         return str(self.pk)
 
     def get_valor_item(self):
-        return self.referenciaCardapio.aggregate(Sum("preco"))['preco__sum'] + self.referenciaOpcionais.aggregate(Sum("preco"))['preco__sum']
+        return self.referenciaCardapio.preco + int(self.referenciaOpcionais.aggregate(Sum("preco"))['preco__sum'] or 0)
 
     def get_absolute_url(self):
         return reverse("pedidos_itemDoCarrinho_detail", args=(self.pk,))
