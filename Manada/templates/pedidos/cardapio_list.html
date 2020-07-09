@@ -65,6 +65,9 @@
 						<p class="card-text">
 							{{object.descricao}}
 						</p>
+						{% if object.imagem %}
+							<img src="{{object.imagem}}" class="img-thumbnail">
+						{% endif %}
 					</div>
 					<div class="card-footer">
 						R${{object.preco}} <span class="float-right"><a href="{% url 'adicionar_ao_carrinho' pk=object %}">+ Adicionar ao Carrinho</a></span>
