@@ -73,8 +73,12 @@ def carrinhoStatusChange(request, pk):
     instance.save()
     if(newStatus == 1):
         request.session.clear()
+        dispatchMessageCarrinho(instance.pk)
         return redirect('pedidos_carrinho_sucesso', pk)
     return redirect('pedidos_carrinho_list')
+
+def dispatchMessageCarrinho(carrinho):
+    print("k")
 
 def carrinhoSucesso(request, pk):
     return render(request,'pedidos/carrinho_sucesso.html',{'idPedido':pk})
