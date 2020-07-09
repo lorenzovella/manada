@@ -20,9 +20,10 @@
       {% ifchanged %}
       <h3>{{obj.get_status_display}}</h3>
       {% endifchanged %}
-      <div class="card m-2">
+      <div class="card m-2" id="card-{{obj}}">
         <div class="card-header">
           <div class="d-flex float-right">
+            <div><a href="card-{{obj}}" class="btn btn-info mr-2">Imprimir</a></div>
             <div><a href="{% url 'pedidos_carrinho_status' obj %}" class="btn btn-warning">Avançar pedido</a></div>
           </div>
           <div class="d-flex flex-column float-left col-8">
