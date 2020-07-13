@@ -1,21 +1,60 @@
 
 {% extends "base.html" %}
 {% load static %}
-{% block content %}
-    
-<p>
-    <a class="btn btn-light" href="{% url 'pedidos_carrinho_list' %}">
-    carrinho Listing
-    </a>
-</p>
-    
-<table class="table">
-    <tr><td>telefone</td><td>{{ object.telefone }}</td></tr>
-    <tr><td>created</td><td>{{ object.created }}</td></tr>
-    <tr><td>last_updated</td><td>{{ object.last_updated }}</td></tr>
-    <tr><td>nome</td><td>{{ object.nome }}</td></tr>
-    <tr><td>status</td><td>{{ object.status }}</td></tr>
-</table>
-<a class="btn btn-primary" href="{{object.get_update_url}}">Edit</a>
+{% block head %}
+<script>
+  function PrintElem(elem)
+  {
+      var mywindow = window.open('', 'PRINT', 'height=400,width=600');
 
+      mywindow.document.write('<html><head><title></title>');
+      mywindow.document.write(document.head.innerHTML);
+      mywindow.document.write('</head><body>');
+      mywindow.document.write(document.getElementById(elem).innerHTML);
+      mywindow.document.write('</body></html>');
+
+      mywindow.document.close(); // necessary for IE >= 10
+      mywindow.focus(); // necessary for IE >= 10*/
+
+      mywindow.print();
+      return true;
+  }
+</script>
+{% endblock %}
+{% block content %}
+<div class="container">
+	<div class="row">
+    <div class="col-md-10 mx-auto">
+      <h4 class="mt-2">Status: {{object.get_status_display}}</h4>
+      <div class="card m-2">
+        <div class="card-header">
+          <div class="d-flex flex-column justify-content-start" id="card-{{object}}">
+            <div class="d-flex align-items-start flex-column">
+              <h5> <span class="badge badge-dark m-2"><h4>nº{{object}}</h4></span> Pedido feito às: {{object.created|date:"j/n H:i"}}</h5>
+              <p class="lead">{{object.nome}} - {{object.telefone}}</p>
+            </div>
+            <ul class="list-group">
+              {% for item in object.item.all  %}
+                <li class="list-group-item">
+                  {{item.referenciaCardapio.nome}}
+                  <span class="float-right ml-2">R${{item.get_valor_item}}</span>
+                  {% if item.referenciaOpcionais %}
+                  <ul class="list-group mt-1">
+                    {% for opt in item.referenciaOpcionais.all  %}
+                      <li class="list-group-item">{{opt.nome}}</li>
+                    {% endfor %}
+                  </ul>
+                </li>
+                {% else %}
+                </li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+            <h4 class="m-2">Total do pedido: R${{object.get_valor_carrinho}}</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

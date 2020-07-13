@@ -3,7 +3,7 @@ from . import models
 from django.db.models.aggregates import Sum
 from . import forms
 from django.shortcuts import redirect, render, HttpResponseRedirect
-from . import twillioHandler
+from . import telegramHandler
 
 def adicionarAoCarrinho(request, pk):
     if request.session.has_key('carrinho') == False:
@@ -46,8 +46,6 @@ class carrinhoListView(generic.ListView):
     def get_queryset(self):
         return self.model.objects.exclude(status="0")
 
-
-
 class carrinhoCreateView(generic.CreateView):
     model = models.carrinho
     form_class = forms.carrinhoForm
@@ -73,7 +71,7 @@ def carrinhoStatusChange(request, pk):
     instance.status = newStatus
     instance.save()
     if(newStatus == 1):
-        twillioHandler.sendMessage(instance.nome+", número: "+instance.telefone+" fez o pedido nº"+str(pk)+" no valor de R$"+str(instance.get_valor_carrinho()))
+        telegramHandler.sendMessage(instance.nome+", número: "+instance.telefone+" fez o pedido nº"+str(pk)+" no valor de R$"+str(instance.get_valor_carrinho()),str(pk))
         request.session.clear()
         return redirect('pedidos_carrinho_sucesso', pk)
     return redirect('pedidos_carrinho_list')
