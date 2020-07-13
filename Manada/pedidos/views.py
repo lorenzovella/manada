@@ -3,6 +3,7 @@ from . import models
 from django.db.models.aggregates import Sum
 from . import forms
 from django.shortcuts import redirect, render, HttpResponseRedirect
+from . import twillioHandler
 
 def adicionarAoCarrinho(request, pk):
     if request.session.has_key('carrinho') == False:
@@ -72,13 +73,11 @@ def carrinhoStatusChange(request, pk):
     instance.status = newStatus
     instance.save()
     if(newStatus == 1):
+        twillioHandler.sendMessage(instance.nome+", número: "+instance.telefone+" fez o pedido nº"+str(pk)+" no valor de R$"+str(instance.get_valor_carrinho()))
         request.session.clear()
-        dispatchMessageCarrinho(instance.pk)
         return redirect('pedidos_carrinho_sucesso', pk)
     return redirect('pedidos_carrinho_list')
 
-def dispatchMessageCarrinho(carrinho):
-    print("k")
 
 def carrinhoSucesso(request, pk):
     return render(request,'pedidos/carrinho_sucesso.html',{'idPedido':pk})
